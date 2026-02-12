@@ -1,0 +1,9 @@
+edad_juan = float(input("Ingrese la edad de Juan: "))
+edad_alberto = (2 * edad_juan) / 3
+edad_ana = (4 * edad_juan) / 3
+edad_mama = edad_juan + edad_alberto + edad_ana
+print("Las edades son:")
+print("Alberto:", edad_alberto)
+print("Juan:", edad_juan)
+print("Ana:", edad_ana)
+print("Mamá:", edad_mama)
