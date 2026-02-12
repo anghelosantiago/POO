@@ -1,0 +1,9 @@
+horas_trabajadas = 48
+valor_hora = 5000
+porcentaje_retencion = 0.125
+salario_bruto = horas_trabajadas * valor_hora
+retencion = salario_bruto * porcentaje_retencion
+salario_neto = salario_bruto - retencion
+print("Salario bruto:", salario_bruto)
+print("Retención:", retencion)
+print("Salario neto:", salario_neto)
