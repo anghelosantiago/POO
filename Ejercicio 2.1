@@ -1,0 +1,50 @@
+class Persona:    
+    def __init__(self, nombre, apellidos, numero_documento, 
+                 anio_nacimiento, pais_nacimiento, genero):
+        
+        self.nombre = nombre
+        self.apellidos = apellidos
+        self.numero_documento = numero_documento
+        self.anio_nacimiento = anio_nacimiento
+        self.pais_nacimiento = pais_nacimiento
+        self.genero = genero   
+    def imprimir(self):
+        print("Nombre:", self.nombre)
+        print("Apellidos:", self.apellidos)
+        print("Documento:", self.numero_documento)
+        print("Año de nacimiento:", self.anio_nacimiento)
+        print("País de nacimiento:", self.pais_nacimiento)
+        print("Género:", self.genero)
+        print("----------------------------")
+
+print("=== INGRESO DE LA PRIMERA PERSONA ===")
+nombre1 = input("Nombre: ")
+apellidos1 = input("Apellidos: ")
+doc1 = input("Documento: ")
+anio1 = int(input("Año de nacimiento: "))
+pais1 = input("País de nacimiento: ")
+
+genero1 = input("Género (H/M): ").upper()
+
+while genero1 not in ['H', 'M']:
+    genero1 = input("Ingrese género válido (H/M): ").upper()
+
+p1 = Persona(nombre1, apellidos1, doc1, anio1, pais1, genero1)
+
+print("\n=== INGRESO DE LA SEGUNDA PERSONA ===")
+nombre2 = input("Nombre: ")
+apellidos2 = input("Apellidos: ")
+doc2 = input("Documento: ")
+anio2 = int(input("Año de nacimiento: "))
+pais2 = input("País de nacimiento: ")
+
+genero2 = input("Género (H/M): ").upper()
+
+while genero2 not in ['H', 'M']:
+    genero2 = input("Ingrese género válido (H/M): ").upper()
+
+p2 = Persona(nombre2, apellidos2, doc2, anio2, pais2, genero2)
+
+print("\n=== DATOS INGRESADOS ===")
+p1.imprimir()
+p2.imprimir()
