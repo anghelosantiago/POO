@@ -1,0 +1,76 @@
+from enum import Enum
+
+class TipoPlaneta(Enum):
+    GASEOSO = 1
+    TERRESTRE = 2
+    ENANO = 3
+
+class Planeta:
+    
+    def __init__(self, nombre, cantidad_satelites, masa, volumen,
+                 diametro, distancia_sol, tipo, es_observable,
+                 periodo_orbital, periodo_rotacion):
+        
+        self.nombre = nombre
+        self.cantidad_satelites = cantidad_satelites
+        self.masa = masa
+        self.volumen = volumen
+        self.diametro = diametro
+        self.distancia_sol = distancia_sol
+        self.tipo = tipo
+        self.es_observable = es_observable
+        self.periodo_orbital = periodo_orbital
+        self.periodo_rotacion = periodo_rotacion
+    
+    def imprimir(self):
+        print("Nombre:", self.nombre)
+        print("Cantidad de satélites:", self.cantidad_satelites)
+        print("Masa:", self.masa)
+        print("Volumen:", self.volumen)
+        print("Diámetro:", self.diametro)
+        print("Distancia al Sol (km):", self.distancia_sol)
+        print("Tipo:", self.tipo.name)
+        print("Es observable:", self.es_observable)
+        print("Periodo orbital (años):", self.periodo_orbital)
+        print("Periodo de rotación (días):", self.periodo_rotacion)
+        print("----------------------------")
+    
+    def calcular_densidad(self):
+        return self.masa / self.volumen
+    
+    def es_planeta_exterior(self):
+        limite = 149597870 * 3.4
+        return self.distancia_sol > limite
+
+print("=== INGRESO DE PLANETA ===")
+
+nombre = input("Nombre: ")
+satelites = int(input("Cantidad de satélites: "))
+masa = float(input("Masa (kg): "))
+volumen = float(input("Volumen (km3): "))
+diametro = int(input("Diámetro (km): "))
+distancia = int(input("Distancia al Sol (km): "))
+
+print("Tipo de planeta (GASEOSO, TERRESTRE, ENANO): ")
+tipo_input = input().upper()
+
+while tipo_input not in ["GASEOSO", "TERRESTRE", "ENANO"]:
+    tipo_input = input("Ingrese un tipo válido: ").upper()
+
+tipo = TipoPlaneta[tipo_input]
+
+observable = input("¿Es observable? (True/False): ")
+observable = observable.lower() == "true"
+
+periodo_orbital = float(input("Periodo orbital (años): "))
+periodo_rotacion = float(input("Periodo de rotación (días): "))
+
+p = Planeta(nombre, satelites, masa, volumen,
+            diametro, distancia, tipo, observable,
+            periodo_orbital, periodo_rotacion)
+
+print("\n=== DATOS DEL PLANETA ===")
+p.imprimir()
+
+print("Densidad:", p.calcular_densidad())
+print("¿Es planeta exterior?:", p.es_planeta_exterior())
