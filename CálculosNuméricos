@@ -1,0 +1,125 @@
+package Excepciones;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+/**
+ * Clase CálculosNuméricos con Interfaz Gráfica de Usuario.
+ * Permite calcular el logaritmo neperiano y la raíz cuadrada
+ * de un valor ingresado, gestionando excepciones múltiples.
+ * @version 1.0/2026
+ */
+public class CálculosNuméricos extends JFrame {
+
+    private JTextField campoValor;
+    private JTextArea areaResultado;
+    private JButton btnLogaritmo;
+    private JButton btnRaiz;
+
+    public CálculosNuméricos() {
+        setTitle("Cálculos Numéricos");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        JLabel etiqueta = new JLabel("Ingrese un valor numérico:");
+        campoValor = new JTextField();
+        
+        JPanel panelBotones = new JPanel(new GridLayout(1, 2, 10, 0));
+        btnLogaritmo = new JButton("Logaritmo Neperiano");
+        btnRaiz = new JButton("Raíz Cuadrada");
+        panelBotones.add(btnLogaritmo);
+        panelBotones.add(btnRaiz);
+
+        areaResultado = new JTextArea(3, 30);
+        areaResultado.setEditable(false);
+        areaResultado.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+        panel.add(etiqueta);
+        panel.add(campoValor);
+        panel.add(panelBotones);
+        panel.add(new JScrollPane(areaResultado));
+
+        add(panel);
+
+        // Acción botón Logaritmo Neperiano
+        btnLogaritmo.addActionListener(e -> {
+            try {
+                double valor = Double.parseDouble(campoValor.getText());
+                calcularLogaritmoNeperiano(valor);
+            } catch (NumberFormatException ex) {
+                areaResultado.setText("Error: El valor debe ser numérico.");
+            }
+        });
+
+        // Acción botón Raíz Cuadrada
+        btnRaiz.addActionListener(e -> {
+            try {
+                double valor = Double.parseDouble(campoValor.getText());
+                calcularRaízCuadrada(valor);
+            } catch (NumberFormatException ex) {
+                areaResultado.setText("Error: El valor debe ser numérico.");
+            }
+        });
+    }
+
+    /**
+     * Calcula el logaritmo neperiano del valor dado.
+     * Lanza ArithmeticException si el valor no es positivo.
+     * @param valor Número al que se calculará el logaritmo
+     */
+    static void calcularLogaritmoNeperiano(double valor) {
+        try {
+            if (valor <= 0) {
+                throw new ArithmeticException("El valor debe ser un número positivo.");
+            }
+            double resultado = Math.log(valor);
+            JOptionPane.showMessageDialog(null,
+                "Logaritmo Neperiano = " + resultado,
+                "Resultado", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ArithmeticException e) {
+            JOptionPane.showMessageDialog(null,
+                "Error aritmético: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                "Error: El valor debe ser numérico.",
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Calcula la raíz cuadrada del valor dado.
+     * Lanza ArithmeticException si el valor no es positivo.
+     * @param valor Número al que se calculará la raíz cuadrada
+     */
+    static void calcularRaízCuadrada(double valor) {
+        try {
+            if (valor < 0) {
+                throw new ArithmeticException("El valor debe ser un número positivo.");
+            }
+            double resultado = Math.sqrt(valor);
+            JOptionPane.showMessageDialog(null,
+                "Raíz Cuadrada = " + resultado,
+                "Resultado", JOptionPane.INFORMATION_MESSAGE);
+        } catch (ArithmeticException e) {
+            JOptionPane.showMessageDialog(null,
+                "Error aritmético: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                "Error: El valor debe ser numérico.",
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new CálculosNuméricos().setVisible(true);
+        });
+    }
+}
