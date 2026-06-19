@@ -1,0 +1,194 @@
+package Excepciones;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+/**
+ * Clase Programador: modela un integrante del equipo.
+ */
+class Programador {
+    String nombre;
+    String apellidos;
+
+    Programador(String nombre, String apellidos) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+    }
+}
+
+/**
+ * Clase EquipoMaratónProgramación con Interfaz Gráfica de Usuario.
+ * Permite registrar un equipo y sus integrantes con validaciones de campo.
+ * @version 1.0/2026
+ */
+public class EquipoMaratónProgramación extends JFrame {
+
+    private JTextField campoNombreEquipo, campoUniversidad, campoLenguaje;
+    private JTextField campoNombreProg, campoApellidosProg;
+    private JTextArea areaEquipo;
+    private JButton btnCrearEquipo, btnAgregarProg;
+
+    private String nombreEquipo;
+    private String universidad;
+    private String lenguajeProgramación;
+    private Programador[] programadores = new Programador[3];
+    private int tamañoEquipo = 0;
+    private boolean equipoCreado = false;
+
+    public EquipoMaratónProgramación() {
+        setTitle("Equipo Maratón de Programación");
+        setSize(500, 520);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // Panel datos del equipo
+        JPanel panelEquipo = new JPanel(new GridLayout(4, 2, 5, 5));
+        panelEquipo.setBorder(BorderFactory.createTitledBorder("Datos del Equipo"));
+        panelEquipo.add(new JLabel("Nombre del equipo:"));
+        campoNombreEquipo = new JTextField();
+        panelEquipo.add(campoNombreEquipo);
+        panelEquipo.add(new JLabel("Universidad:"));
+        campoUniversidad = new JTextField();
+        panelEquipo.add(campoUniversidad);
+        panelEquipo.add(new JLabel("Lenguaje de programación:"));
+        campoLenguaje = new JTextField();
+        panelEquipo.add(campoLenguaje);
+        btnCrearEquipo = new JButton("Crear Equipo");
+        panelEquipo.add(new JLabel());
+        panelEquipo.add(btnCrearEquipo);
+
+        // Panel datos del programador
+        JPanel panelProg = new JPanel(new GridLayout(3, 2, 5, 5));
+        panelProg.setBorder(BorderFactory.createTitledBorder("Agregar Programador"));
+        panelProg.add(new JLabel("Nombre:"));
+        campoNombreProg = new JTextField();
+        panelProg.add(campoNombreProg);
+        panelProg.add(new JLabel("Apellidos:"));
+        campoApellidosProg = new JTextField();
+        panelProg.add(campoApellidosProg);
+        btnAgregarProg = new JButton("Agregar Programador");
+        btnAgregarProg.setEnabled(false);
+        panelProg.add(new JLabel());
+        panelProg.add(btnAgregarProg);
+
+        // Área de resultado
+        areaEquipo = new JTextArea(8, 40);
+        areaEquipo.setEditable(false);
+        areaEquipo.setBorder(BorderFactory.createTitledBorder("Estado del Equipo"));
+
+        panelPrincipal.add(panelEquipo);
+        panelPrincipal.add(Box.createVerticalStrut(10));
+        panelPrincipal.add(panelProg);
+        panelPrincipal.add(Box.createVerticalStrut(10));
+        panelPrincipal.add(new JScrollPane(areaEquipo));
+
+        add(panelPrincipal);
+
+        // Crear equipo
+        btnCrearEquipo.addActionListener(e -> {
+            String nom = campoNombreEquipo.getText().trim();
+            String uni = campoUniversidad.getText().trim();
+            String len = campoLenguaje.getText().trim();
+            if (nom.isEmpty() || uni.isEmpty() || len.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                    "Todos los campos del equipo son obligatorios.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            nombreEquipo = nom;
+            universidad = uni;
+            lenguajeProgramación = len;
+            equipoCreado = true;
+            tamañoEquipo = 0;
+            programadores = new Programador[3];
+            btnAgregarProg.setEnabled(true);
+            actualizarArea();
+            JOptionPane.showMessageDialog(this,
+                "Equipo '" + nombreEquipo + "' creado con éxito.",
+                "Equipo Creado", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        // Agregar programador
+        btnAgregarProg.addActionListener(e -> {
+            if (!equipoCreado) {
+                JOptionPane.showMessageDialog(this,
+                    "Primero debe crear un equipo.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                String nombre = campoNombreProg.getText().trim();
+                String apellidos = campoApellidosProg.getText().trim();
+                validarCampo(nombre);
+                validarCampo(apellidos);
+                añadir(new Programador(nombre, apellidos));
+                campoNombreProg.setText("");
+                campoApellidosProg.setText("");
+                actualizarArea();
+                JOptionPane.showMessageDialog(this,
+                    "Programador agregado con éxito.",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,
+                    "Error: " + ex.getMessage(),
+                    "Error de validación", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+
+    boolean estáLleno() {
+        return tamañoEquipo == programadores.length;
+    }
+
+    void añadir(Programador programador) throws Exception {
+        if (estáLleno()) {
+            throw new Exception("El equipo está completo (máx. 3 integrantes).");
+        }
+        programadores[tamañoEquipo] = programador;
+        tamañoEquipo++;
+    }
+
+    static void validarCampo(String campo) throws Exception {
+        if (campo == null || campo.isEmpty()) {
+            throw new Exception("El campo no puede estar vacío.");
+        }
+        for (int j = 0; j < campo.length(); j++) {
+            if (Character.isDigit(campo.charAt(j))) {
+                throw new Exception("El nombre no puede tener dígitos.");
+            }
+        }
+        if (campo.length() > 20) {
+            throw new Exception("La longitud no debe ser superior a 20 caracteres.");
+        }
+    }
+
+    private void actualizarArea() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Equipo: ").append(nombreEquipo).append("\n");
+        sb.append("Universidad: ").append(universidad).append("\n");
+        sb.append("Lenguaje: ").append(lenguajeProgramación).append("\n");
+        sb.append("Integrantes (").append(tamañoEquipo).append("/3):\n");
+        for (int i = 0; i < tamañoEquipo; i++) {
+            sb.append("  ").append(i + 1).append(". ")
+              .append(programadores[i].nombre)
+              .append(" ").append(programadores[i].apellidos).append("\n");
+        }
+        if (tamañoEquipo >= 2) {
+            sb.append("✔ El equipo puede participar en la maratón.");
+        } else {
+            sb.append("⚠ Se necesitan al menos 2 integrantes.");
+        }
+        areaEquipo.setText(sb.toString());
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new EquipoMaratónProgramación().setVisible(true);
+        });
+    }
+}
