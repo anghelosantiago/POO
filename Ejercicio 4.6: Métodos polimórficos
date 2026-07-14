@@ -1,0 +1,54 @@
+class Empleado {
+    protected String nombre;
+
+    public Empleado(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double calcularSalario() {
+        return 0;
+    }
+}
+
+class EmpleadoTiempoCompleto extends Empleado {
+    private double salarioMensual;
+
+    public EmpleadoTiempoCompleto(String nombre, double salarioMensual) {
+        super(nombre);
+        this.salarioMensual = salarioMensual;
+    }
+
+    @Override
+    public double calcularSalario() {
+        return salarioMensual;
+    }
+}
+
+class EmpleadoPorHoras extends Empleado {
+    private double valorHora;
+    private int horas;
+
+    public EmpleadoPorHoras(String nombre, double valorHora, int horas) {
+        super(nombre);
+        this.valorHora = valorHora;
+        this.horas = horas;
+    }
+
+    @Override
+    public double calcularSalario() {
+        return valorHora * horas;
+    }
+}
+
+public class PruebaMetodosPolimorficos {
+    public static void main(String[] args) {
+        Empleado[] empleados = {
+            new EmpleadoTiempoCompleto("Laura", 2500000),
+            new EmpleadoPorHoras("Carlos", 18000, 120)
+        };
+
+        for (Empleado e : empleados) {
+            System.out.println(e.nombre + " gana: " + e.calcularSalario());
+        }
+    }
+}
