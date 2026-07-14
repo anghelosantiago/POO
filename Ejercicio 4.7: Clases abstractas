@@ -1,0 +1,47 @@
+abstract class Animal {
+    protected String nombre;
+
+    public Animal(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public abstract void hablar();
+
+    public void dormir() {
+        System.out.println(nombre + " está durmiendo");
+    }
+}
+
+class Perro extends Animal {
+    public Perro(String nombre) {
+        super(nombre);
+    }
+
+    @Override
+    public void hablar() {
+        System.out.println(nombre + " dice: guau");
+    }
+}
+
+class Gato extends Animal {
+    public Gato(String nombre) {
+        super(nombre);
+    }
+
+    @Override
+    public void hablar() {
+        System.out.println(nombre + " dice: miau");
+    }
+}
+
+public class PruebaClasesAbstractas {
+    public static void main(String[] args) {
+        Animal a1 = new Perro("Rex");
+        Animal a2 = new Gato("Luna");
+
+        a1.hablar();
+        a1.dormir();
+        a2.hablar();
+        a2.dormir();
+    }
+}
